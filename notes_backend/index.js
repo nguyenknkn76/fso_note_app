@@ -1,7 +1,11 @@
 const express = require('express')
+
 const app = express()
 
+const cors = require('cors')
+app.use(cors())
 app.use(express.json()) //! json-parser
+
 
 //! config request logger
 //todo same function with morgan
@@ -36,6 +40,10 @@ let notes = [
     {
         id: 3,
         content: "GET and POST are the most important methods of HTTP protocol",
+        important: true
+    },{
+        id: 4,
+        content: "test backend with express",
         important: true
     }
 ]
@@ -88,6 +96,6 @@ const unknownEndpoint = (req, res) => {
 app.use(unknownEndpoint)
 
 PORT = 3001
-app.listen(PORT, ()=> {
+app.listen(PORT, () => {
     console.log(`server running in PORT ${PORT}`)
 })
