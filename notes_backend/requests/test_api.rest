@@ -8,6 +8,6 @@ POST http://localhost:3001/api/notes
 Content-Type: application/json
 
 {
-    "content": "nguyen dz", 
+    "content": "no", 
     "important": false
 }
