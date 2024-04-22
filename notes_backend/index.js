@@ -30,31 +30,6 @@ morgan.token('body', function (req, res) {
 const formatStr = ':method :url :status :res[content-length] - :response-time ms :body'
 app.use(morgan(formatStr))
 
-// //! moongose definitions =================================
-// const mongoose = require('mongoose')
-// const password = process.argv[2]
-// const url = `mongodb+srv://nguyenknkn76:${password}@clusterfso2.zjsmwck.mongodb.net/noteApp?retryWrites=true&w=majority&appName=ClusterFso2`
-
-// mongoose.set('strictQuery',false)
-// mongoose.connect(url)
-
-// const noteSchema = new mongoose.Schema({
-//     content: String,
-//     important: Boolean
-// })
-
-// const Note = mongoose.model('Note',noteSchema)
-
-// //! config note.id format
-// noteSchema.set('toJSON', {
-//     transform: (document, returnedObject) => {
-//         returnedObject.id = returnedObject._id.toString()
-//         delete returnedObject._id
-//         delete returnedObject.__v
-//     }
-// })
-// //!==========================================================
-
 let notes = [
     {
         id: 1,
@@ -86,18 +61,9 @@ app.get(`/api/notes`,(req,res) => {
     Note.find({}).then(notes => {
         res.json(notes)
     })
-    // .catch(err => next(err))
-    // res.json(notes)
 })
 
 app.get(`/api/notes/:id`,(req,res,next) => {
-    // const id = Number(req.params.id)
-    // const note = notes.find(note => note.id === id)
-    // if(note){
-    //     res.json(note)
-    // }else{
-    //     res.status.json({error:'not found'})
-    // }
     const id = req.params.id
     Note.findById(id)
         .then(note => {
@@ -108,26 +74,16 @@ app.get(`/api/notes/:id`,(req,res,next) => {
             }
         })
         .catch(err => next(err))
-        // .catch(err => {
-        //     console.log(err)
-        //     res.status(400).send({error:"malformatted id"})
-        // })
 })
 
 app.delete(`/api/notes/:id`, (req,res,next) =>{
-    // const id = req.params.id
-    // notes = notes.filter(note => note.id !== id)
-    // res.status(204).end()
     Note.findByIdAndDelete(req.params.id)
         .then(result => {
             res.status(204).end()
         })
         .catch(err => next(err))
 })
-// app.put(`/api/notes/:id`,(req,res)=> {
-//     const id = Number(req.params.id)
-//     notes = notes.map(note => note.id !== id ? note : updatedNote)
-// })
+
 app.put(`/api/notes/:id`,(req,res, next)=> {
     const body = req.body
     const note = {
@@ -159,13 +115,6 @@ app.post(`/api/notes`,(req,res) => {
     newNote.save().then(savedNote => {
         res.json(savedNote)
     })
-    // const note = {
-    //     id: generateId(),
-    //     content: body.content,
-    //     important: body.important || false
-    // }
-    // notes = notes.concat(note)
-    // res.json(note)
 })
 
 const unknownEndpoint = (req, res) => {
@@ -186,7 +135,3 @@ const PORT = process.env.PORT
 app.listen(PORT, () => {
     console.log(`server running in PORT ${PORT}`)
 })
-
-// npm install mongodb@4.0
-// mongodb+srv://nguyenknkn76:<password>@nguyen-cluster.hkp3hcw.mongodb.net/?retryWrites=true&w=majority&appName=nguyen-cluster
-// connecting string: //! mongodb+srv://nguyenknkn76:<password>@nguyen-cluster.hkp3hcw.mongodb.net/

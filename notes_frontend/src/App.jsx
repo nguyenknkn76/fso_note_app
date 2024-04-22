@@ -18,16 +18,7 @@ const App = () => {
         setNotes(initNotes)
       })
   },[])
-  // useEffect(() => {
-  //   console.log('effect')
-  //   axios
-  //     .get('http://localhost:3001/notes')
-  //     .then(response => {
-  //       setNotes(response.data)
-  //     })
-  // },[])
-  // console.log('render', notes.length, 'notes')
-  
+
   const noteToShow = showAll ? notes : notes.filter(note => note.important === true)
   const addNote = (event) => {
     event.preventDefault()
@@ -41,14 +32,6 @@ const App = () => {
         setNotes(notes.concat(returnedNote))
         setNewNote('')
       })
-    // axios
-    //   .post('http://localhost:3001/notes',noteObject)
-    //   .then(response => {
-    //     setNotes(notes.concat(response.data))
-    //     setNewNote('')
-    //   })
-    
-    // console.log("button click", event.target)
   }
   const toggleImportance = (id) => {
     const url = `http://localhost:3001/notes/${id}`
@@ -69,12 +52,6 @@ const App = () => {
         }, 5000)
         // setNotes(notes.filter(note => note.id !== id))
       })
-    // axios
-    //   .put(url, changedNote)
-    //   .then(response => {
-    //     setNotes(notes.map(note => note.id !== id ? note : response.data))
-    //   })
-    // console.log('important of',id, 'nedds to be toggled')
   }
   const deleteNote = (id) => {
     noteService
