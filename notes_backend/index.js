@@ -86,6 +86,7 @@ app.get(`/api/notes`,(req,res) => {
     Note.find({}).then(notes => {
         res.json(notes)
     })
+    // .catch(err => next(err))
     // res.json(notes)
 })
 
@@ -113,15 +114,32 @@ app.get(`/api/notes/:id`,(req,res,next) => {
         // })
 })
 
-app.delete(`/api/notes/:id`, (req,res) =>{
-    const id = Number(req.params.id)
-    notes = notes.filter(note => note.id !== id)
-    res.status(204).end()
+app.delete(`/api/notes/:id`, (req,res,next) =>{
+    // const id = req.params.id
+    // notes = notes.filter(note => note.id !== id)
+    // res.status(204).end()
+    Note.findByIdAndDelete(req.params.id)
+        .then(result => {
+            res.status(204).end()
+        })
+        .catch(err => next(err))
 })
 // app.put(`/api/notes/:id`,(req,res)=> {
 //     const id = Number(req.params.id)
 //     notes = notes.map(note => note.id !== id ? note : updatedNote)
 // })
+app.put(`/api/notes/:id`,(req,res, next)=> {
+    const body = req.body
+    const note = {
+        content: body.content,
+        important: body.important,
+    }
+    Note.findByIdAndUpdate(req.params.id, note,{new: true})
+        .then(updatedNote => {
+            res.json(updatedNote)
+        })
+        .catch(err => next(err))
+})
 
 const generateId = () => {
     const maxId = Math.max(...notes.map(note => note.id))

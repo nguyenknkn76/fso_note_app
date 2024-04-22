@@ -10,7 +10,7 @@ const App = () => {
   const [notes, setNotes] = useState([])
   const [newNote, setNewNote] = useState('new note nhe')
   const [showAll, setShowAll]  = useState(true)
-  const [errorMessage, setErrorMessage] = useState('some error was happend')
+  const [errorMessage, setErrorMessage] = useState(null)
   useEffect(() => {
     noteService
       .getAll()
@@ -80,7 +80,10 @@ const App = () => {
     noteService
       .remove(id)
       .then(deletedNote => {
-        setNotes(notes.filter(note => note.id !== deleteNote.id))
+        const newNotes = notes.filter(note => note.id !== deleteNote.id)
+        setNotes(newNotes)
+
+        console.log('delete success')
       })
       .catch(err => {
         setErrorMessage(
