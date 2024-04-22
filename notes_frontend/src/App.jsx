@@ -67,7 +67,7 @@ const App = () => {
         setTimeout(() => {
           setErrorMessage(null)
         }, 5000)
-        setNotes(notes.filter(note => note.id !== id))
+        // setNotes(notes.filter(note => note.id !== id))
       })
     // axios
     //   .put(url, changedNote)
@@ -76,7 +76,22 @@ const App = () => {
     //   })
     // console.log('important of',id, 'nedds to be toggled')
   }
-
+  const deleteNote = (id) => {
+    noteService
+      .remove(id)
+      .then(deletedNote => {
+        setNotes(notes.filter(note => note.id !== deleteNote.id))
+      })
+      .catch(err => {
+        setErrorMessage(
+          `Note '${note.content}' delete error`
+        )
+        setTimeout(() => {
+          setErrorMessage(null)
+        }, 5000)
+        setNotes(notes.filter(note => note.id !== id))
+      })
+  }
   const handleNoteChange = (event) => {
     console.log(event.target.value)
     setNewNote(event.target.value)
@@ -94,6 +109,7 @@ const App = () => {
             key = {note.id} 
             note ={note}
             toggleImportance={() => toggleImportance(note.id)}
+            deleteNote={() => deleteNote(note.id)}
           />
         )}
       </ul>
