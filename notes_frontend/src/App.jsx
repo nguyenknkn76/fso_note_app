@@ -11,13 +11,22 @@ const App = () => {
   const [newNote, setNewNote] = useState('new note nhe')
   const [showAll, setShowAll]  = useState(true)
   const [errorMessage, setErrorMessage] = useState(null)
+  // useEffect(() => {
+  //   noteService
+  //     .getAll()
+  //     .then(initNotes => {
+  //       setNotes(initNotes)
+  //     })
+  // },[])
+
   useEffect(() => {
     noteService
       .getAll()
       .then(initNotes => {
         setNotes(initNotes)
       })
-  },[])
+  },[notes])
+
 
   const noteToShow = showAll ? notes : notes.filter(note => note.important === true)
   const addNote = (event) => {
