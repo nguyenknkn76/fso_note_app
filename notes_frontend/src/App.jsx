@@ -5,12 +5,14 @@ import { useEffect } from "react"
 import noteService from "./services/NoteService"
 import Notification from "./components/NotificationComponent"
 import Footer from "./components/FooterComponent"
+import { set } from "../../notes_backend/app"
 
 const App = () => {
   const [notes, setNotes] = useState([])
   const [newNote, setNewNote] = useState('new note nhe')
   const [showAll, setShowAll]  = useState(true)
   const [errorMessage, setErrorMessage] = useState(null)
+  const [initLoad, setInitload] = useState(true)
   // useEffect(() => {
   //   noteService
   //     .getAll()
@@ -20,12 +22,22 @@ const App = () => {
   // },[])
 
   useEffect(() => {
-    noteService
+    if(initLoad){
+      noteService
       .getAll()
       .then(initNotes => {
         setNotes(initNotes)
       })
-  },[notes])
+      setInitload(false)
+    }else{
+      noteService
+      .getAll()
+      .then(initNotes => {
+        setNotes(initNotes)
+      })
+    }
+    
+  },[initLoad, notes])
 
 
   const noteToShow = showAll ? notes : notes.filter(note => note.important === true)
