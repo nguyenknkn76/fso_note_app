@@ -5,7 +5,6 @@ import { useEffect } from "react"
 import noteService from "./services/NoteService"
 import Notification from "./components/NotificationComponent"
 import Footer from "./components/FooterComponent"
-import { set } from "../../notes_backend/app"
 
 const App = () => {
   const [notes, setNotes] = useState([])
@@ -35,6 +34,7 @@ const App = () => {
       .then(initNotes => {
         setNotes(initNotes)
       })
+      setInitload(false)
     }
     
   },[initLoad, notes])
@@ -52,6 +52,7 @@ const App = () => {
       .then(returnedNote => {
         setNotes(notes.concat(returnedNote))
         setNewNote('')
+        setInitload(true)
       })
   }
   const toggleImportance = (id) => {
@@ -62,6 +63,7 @@ const App = () => {
       .update(id, changedNote)
       .then(returnedNote => {
         setNotes(notes.map(note => note.id !== id ? note : returnedNote))
+        setInitload(true)
       })
       .catch(error => {
         // alert(`the note ${note.content} was already deleted from server`)
@@ -80,7 +82,7 @@ const App = () => {
       .then(deletedNote => {
         const newNotes = notes.filter(note => note.id !== deleteNote.id)
         setNotes(newNotes)
-
+        setInitload(true)
         console.log('delete success')
       })
       .catch(err => {
