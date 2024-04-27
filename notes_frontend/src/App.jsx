@@ -21,23 +21,15 @@ const App = () => {
   // },[])
 
   useEffect(() => {
-    if(initLoad){
+    
       noteService
       .getAll()
       .then(initNotes => {
         setNotes(initNotes)
         setInitLoad(false)
       })
-    } else {
-      noteService
-      .getAll()
-      .then(initNotes => {
-        setNotes(initNotes)
-
-        
-      })
     }
-  },[initLoad, notes])
+  ,[notes])
 
 
   const noteToShow = showAll ? notes : notes.filter(note => note.important === true)
