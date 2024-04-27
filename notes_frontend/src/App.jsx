@@ -11,7 +11,7 @@ const App = () => {
   const [newNote, setNewNote] = useState('new note nhe')
   const [showAll, setShowAll]  = useState(true)
   const [errorMessage, setErrorMessage] = useState(null)
-  const [initLoad, setInitload] = useState(true)
+  const [initLoad, setInitLoad] = useState(true)
   // useEffect(() => {
   //   noteService
   //     .getAll()
@@ -26,17 +26,17 @@ const App = () => {
       .getAll()
       .then(initNotes => {
         setNotes(initNotes)
+        setInitLoad(false)
       })
-      setInitload(false)
-    }else{
+    } else {
       noteService
       .getAll()
       .then(initNotes => {
         setNotes(initNotes)
+
+        
       })
-      setInitload(false)
     }
-    
   },[initLoad, notes])
 
 
@@ -52,7 +52,6 @@ const App = () => {
       .then(returnedNote => {
         setNotes(notes.concat(returnedNote))
         setNewNote('')
-        setInitload(true)
       })
   }
   const toggleImportance = (id) => {
@@ -63,7 +62,6 @@ const App = () => {
       .update(id, changedNote)
       .then(returnedNote => {
         setNotes(notes.map(note => note.id !== id ? note : returnedNote))
-        setInitload(true)
       })
       .catch(error => {
         // alert(`the note ${note.content} was already deleted from server`)
@@ -82,7 +80,6 @@ const App = () => {
       .then(deletedNote => {
         const newNotes = notes.filter(note => note.id !== deleteNote.id)
         setNotes(newNotes)
-        setInitload(true)
         console.log('delete success')
       })
       .catch(err => {
