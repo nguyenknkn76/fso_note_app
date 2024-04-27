@@ -29,7 +29,7 @@ const App = () => {
         setInitLoad(false)
       })
     }
-  ,[notes])
+  ,[])
 
 
   const noteToShow = showAll ? notes : notes.filter(note => note.important === true)
