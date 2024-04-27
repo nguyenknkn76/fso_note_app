@@ -11,3 +11,11 @@ Content-Type: application/json
     "content": "no", 
     "important": false
 }
+###
+PUT http://localhost:3001/api/notes/
+Content-Type: application/json
+
+{
+    "content": "test update synsc await",
+    "important": false
+}

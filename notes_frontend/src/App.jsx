@@ -19,17 +19,18 @@ const App = () => {
   //       setNotes(initNotes)
   //     })
   // },[])
-
-  useEffect(() => {
-    
+  const reRender = () =>{
+    useEffect(() => {
       noteService
       .getAll()
       .then(initNotes => {
         setNotes(initNotes)
         setInitLoad(false)
       })
-    }
-  ,[])
+    },[])
+  }
+
+  reRender()
 
 
   const noteToShow = showAll ? notes : notes.filter(note => note.important === true)
@@ -54,6 +55,7 @@ const App = () => {
       .update(id, changedNote)
       .then(returnedNote => {
         setNotes(notes.map(note => note.id !== id ? note : returnedNote))
+        reRender()
       })
       .catch(error => {
         // alert(`the note ${note.content} was already deleted from server`)
@@ -73,6 +75,7 @@ const App = () => {
         const newNotes = notes.filter(note => note.id !== deleteNote.id)
         setNotes(newNotes)
         console.log('delete success')
+        reRender()
       })
       .catch(err => {
         setErrorMessage(

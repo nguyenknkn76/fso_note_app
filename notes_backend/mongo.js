@@ -6,7 +6,7 @@ if (process.argv.length < 3) {
 }
 
 const password = process.argv[2]
-const url = `mongodb+srv://nguyenknkn76:${password}@clusterfso2.zjsmwck.mongodb.net/noteApp?retryWrites=true&w=majority&appName=ClusterFso2`
+const url = `mongodb+srv://nguyenknkn76:${password}@clusterfso2.zjsmwck.mongodb.net/testNoteApp?retryWrites=true&w=majority&appName=ClusterFso2`
 
 // npm install mongodb@4.0
 // mongodb+srv://nguyenknkn76:${password}@clusterfso2.zjsmwck.mongodb.net/${appname}?retryWrites=true&w=majority&appName=ClusterFso2
@@ -22,19 +22,20 @@ const noteSchema = new mongoose.Schema({
 
 const Note = mongoose.model('Note', noteSchema)
 
-// const note = new Note({
-//   content: 'css is NOT easy',
-//   important: false
-// })
+const note = new Note({
 
-Note.find({}).then(result => {
-  result.forEach(note => {
-    console.log(note)
-  })
-  mongoose.connection.close()
+  content: 'css is NOT easy',
+  important: false
 })
 
-// note.save().then(result => {
-//     console.log('note saved')
-//     mongoose.connection.close()
+// Note.find({}).then(result => {
+//   result.forEach(note => {
+//     console.log(note)
+//   })
+//   mongoose.connection.close()
 // })
+
+note.save().then(result => {
+    console.log('note saved')
+    mongoose.connection.close()
+})
