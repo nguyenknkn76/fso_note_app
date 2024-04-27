@@ -55,7 +55,7 @@ const App = () => {
       .update(id, changedNote)
       .then(returnedNote => {
         setNotes(notes.map(note => note.id !== id ? note : returnedNote))
-        reRender()
+      
       })
       .catch(error => {
         // alert(`the note ${note.content} was already deleted from server`)
@@ -75,7 +75,6 @@ const App = () => {
         const newNotes = notes.filter(note => note.id !== deleteNote.id)
         setNotes(newNotes)
         console.log('delete success')
-        reRender()
       })
       .catch(err => {
         setErrorMessage(
@@ -94,7 +93,7 @@ const App = () => {
 
   return(
     <div>
-      <h1>notes</h1>
+      <h1>notes - nothing change</h1>
       <Notification message = {errorMessage}/>
       <div><button onClick={() => {setShowAll(!showAll)}}>show {showAll ? 'important' : 'all'}</button></div>
       
