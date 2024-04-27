@@ -12,6 +12,7 @@ const App = () => {
   const [showAll, setShowAll]  = useState(true)
   const [errorMessage, setErrorMessage] = useState(null)
   const [initLoad, setInitLoad] = useState(true)
+  
   // useEffect(() => {
   //   noteService
   //     .getAll()
