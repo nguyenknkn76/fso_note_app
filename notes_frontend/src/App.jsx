@@ -13,26 +13,13 @@ const App = () => {
   const [errorMessage, setErrorMessage] = useState(null)
   const [initLoad, setInitLoad] = useState(true)
   
-  // useEffect(() => {
-  //   noteService
-  //     .getAll()
-  //     .then(initNotes => {
-  //       setNotes(initNotes)
-  //     })
-  // },[])
-  const reRender = () =>{
-    useEffect(() => {
-      noteService
+  useEffect(() => {
+    noteService
       .getAll()
       .then(initNotes => {
         setNotes(initNotes)
-        setInitLoad(false)
       })
-    },[])
-  }
-
-  reRender()
-
+  },[])
 
   const noteToShow = showAll ? notes : notes.filter(note => note.important === true)
   const addNote = (event) => {

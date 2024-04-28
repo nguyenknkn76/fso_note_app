@@ -105,6 +105,7 @@ test('a note can be deleted', async () => {
     assert.strictEqual(notesAtEnd.length, helper.initialNotes.length - 1)
 })
 
+
 after(async () => {
     await mongoose.connection.close()
 })
