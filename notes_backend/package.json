@@ -9,7 +9,7 @@
     "test": "NODE_ENV=test node --test",
     "build:ui": "cd ../notes_frontend && npm run build && cp -r dist ../notes_backend",
     "build:ui2": "rm -rf dist && cd ../notes_frontend && npm run build && cp -r dist ../notes_backend",
-    "deploy:full": "npm run build:ui && cd .. && git add . && git commit -m uibuild && git push origin part42",
+    "deploy:full": "npm run build:ui && cd .. && git add . && git commit -m uibuild && git push origin part51",
     "lint": "eslint ."
   },
   "author": "",
