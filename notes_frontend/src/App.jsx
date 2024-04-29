@@ -51,6 +51,15 @@ const App = () => {
         setNotes(initNotes)
       })
   },[])
+  
+  useEffect(()=> {
+    const loggedUserJSON = window.localStorage.getItem('loggedNoteAppUser')
+    if (loggedUserJSON){
+      const user = JSON.parse(loggedUserJSON)
+      setUser(user)
+      noteService.setToken(user.token)
+    }
+  },[])
 
   const noteToShow = showAll ? notes : notes.filter(note => note.important === true)
   const addNote = (event) => {
@@ -74,7 +83,6 @@ const App = () => {
       .update(id, changedNote)
       .then(returnedNote => {
         setNotes(notes.map(note => note.id !== id ? note : returnedNote))
-      
       })
       .catch(error => {
         // alert(`the note ${note.content} was already deleted from server`)
@@ -114,9 +122,12 @@ const App = () => {
     event.preventDefault()
     console.log(`logging with username: ${username}, password: ${password}`)
     try{
-      const user = await loginService.login({username, password})
-      noteService.setToken(user.token)
-      setUser(user)
+      const loginUser = await loginService.login({username, password})
+      window.localStorage.setItem('loggedNoteAppUser', JSON.stringify(loginUser))
+      console.log(`this localStorage`, window.localStorage)
+      noteService.setToken(loginUser.token)
+      console.log('this is loginUser',loginUser)
+      setUser(loginUser)
       setUsername('')
       setPassword('')
     }catch(e){
@@ -125,14 +136,28 @@ const App = () => {
         setErrorMessage(null)
       },5000)
     }
-    
+  }
+  const handleLogout = (event) => {
+    event.preventDefault()
+    setUser(null)
+    noteService.setToken(null)
+    window.localStorage.removeItem('loggedNoteAppUser')
+    console.log(window.localStorage)
+    // alert('logout success')
+    // window.localStorage.clear() //! clear all local storage
   }
   return(
     <div>
       <h1>notes - nothing change</h1>
       <Notification message = {errorMessage}/>
 
-      {user === null ? loginForm() : noteForm()}
+      {user === null ? loginForm() : 
+        <div>
+          <p>{user.name} logged-in <button onClick={handleLogout}>logout</button></p>
+          {/* {logoutForm()} */}
+          {noteForm()}
+        </div>
+      }
 
       <br/>
       <div><button onClick={() => {setShowAll(!showAll)}}>show {showAll ? 'important' : 'all'}</button></div>

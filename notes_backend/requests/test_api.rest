@@ -7,13 +7,13 @@ DELETE http://localhost:3001/api/notes/662e19ebcc9487c75f12f8aa
 ###
 POST http://localhost:3001/api/notes
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImxvbmciLCJpZCI6IjY2MmU2YWQwYWY4N2IxOGZjZWZlNzBjYyIsImlhdCI6MTcxNDMyMjExOCwiZXhwIjoxNzE0MzI1NzE4fQ.G5sHXwt1HrlvaqBacSEldM-rMYSxe83yeunvEd7QOkA
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImxvbmciLCJpZCI6IjY2MmU2YWQwYWY4N2IxOGZjZWZlNzBjYyIsImlhdCI6MTcxNDM2NjUwNiwiZXhwIjoxNzE0MzcwMTA2fQ.ff93WFS7aQJf9BNbgK13-izfJ5C_ISu6pY1QevWLpQ4
 
-{   "content": "htmlol", 
+{
+    "content": "vui ve uncut", 
     "important": true
 }
 
- 
 # {
 #     "content": "em yêu các anh", 
 #     "important": false,
