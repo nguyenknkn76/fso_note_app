@@ -1,12 +1,15 @@
 import { useState } from "react"
 import Note from "./components/NoteComponent"
+import LoginForm from "./components/LoginForm"
+import NoteForm from "./components/NoteForm"
+import Togglabel from "./components/TogglabelComponent"
 import axios from 'axios'
 import { useEffect } from "react"
 import noteService from "./services/NoteService"
 import loginService from "./services/LoginService"
 import Notification from "./components/NotificationComponent"
 import Footer from "./components/FooterComponent"
-// import { set } from "../../notes_backend/app"
+
 
 const App = () => {
   const [notes, setNotes] = useState([])
@@ -16,33 +19,11 @@ const App = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')  
   const [user, setUser] = useState(null)
-
+  const [loginVisible, setLoginVisible] = useState(false)
+  const hideWhenVisible = {display: loginVisible ? 'none' : ''}
+  const showWhenVisible = {display: loginVisible ? '' : 'none'}
 
   //! FORM
-  const loginForm = () => {
-    return(
-      <form onSubmit={handleLogin}>
-        <div>
-          username: <input type="text" value={username} name="Username" onChange={({target}) => setUsername(target.value)}/>
-        </div>
-        <div>
-          password: <input type="password" value={password} name="Password" onChange={({target}) => setPassword(target.value)}/>
-        </div>
-        <button type="submit">Login</button>
-    </form>
-    )
-  }
-
-  const noteForm = () => {
-    return(
-      <form onSubmit={addNote}>
-        <input value={newNote} onChange={({target}) => setNewNote(target.value)}/>
-        <button type="submit">save</button>
-      </form>
-    )
-
-  } 
-
   //! Some function
   useEffect(() => {
     noteService
@@ -51,7 +32,7 @@ const App = () => {
         setNotes(initNotes)
       })
   },[])
-  
+
   useEffect(()=> {
     const loggedUserJSON = window.localStorage.getItem('loggedNoteAppUser')
     if (loggedUserJSON){
@@ -151,15 +132,48 @@ const App = () => {
       <h1>notes - nothing change</h1>
       <Notification message = {errorMessage}/>
 
-      {user === null ? loginForm() : 
+      {
+        user === null ?
+        <div>
+          <Togglabel buttonLabel = 'log-in-func'>
+            <LoginForm
+              handleLogin={handleLogin}
+              username={username}
+              password={password}
+              handleUsernameChange={({target}) => setUsername(target.value)}
+              handlePasswordChange={({target}) => setPassword(target.value)}
+            />
+          </Togglabel>
+
+          {/* <div style={hideWhenVisible}>
+            <button onClick={()=>setLoginVisible(true)}>log-in</button>
+          </div>
+
+          <div style={showWhenVisible}>
+            <LoginForm
+              handleLogin={handleLogin}
+              username={username}
+              password={password}
+              handleUsernameChange={({target}) => setUsername(target.value)}
+              handlePasswordChange={({target}) => setPassword(target.value)}
+            />
+            <button onClick={()=>setLoginVisible(false)}>cancel</button>
+          </div> */}
+        </div> :
+
         <div>
           <p>{user.name} logged-in <button onClick={handleLogout}>logout</button></p>
-          {/* {logoutForm()} */}
-          {noteForm()}
+          <Togglabel buttonLabel = 'add-note-func'>
+            <NoteForm
+              addNote={addNote}
+              newNote={newNote}
+              handleNewNoteChange={({target}) => setNewNote(target.value)}
+            />
+          </Togglabel>
         </div>
-      }
-
-      <br/>
+        
+      }<br/>
+      
       <div><button onClick={() => {setShowAll(!showAll)}}>show {showAll ? 'important' : 'all'}</button></div>
       <ul>
         {noteToShow.map(note => 
@@ -171,6 +185,14 @@ const App = () => {
           />
         )}
       </ul>
+
+      <p>
+        just test togglabel: 
+        <Togglabel buttonLabel = 'reveal'>
+          <p>this line is at start hidden</p>
+          <p>also this is hidden</p>
+        </Togglabel>
+      </p>
       <Footer/>
     </div>
   )
