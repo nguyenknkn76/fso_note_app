@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useRef, useState } from "react"
 import Note from "./components/NoteComponent"
 import LoginForm from "./components/LoginForm"
 import NoteForm from "./components/NoteForm"
@@ -13,7 +13,7 @@ import Footer from "./components/FooterComponent"
 
 const App = () => {
   const [notes, setNotes] = useState([])
-  const [newNote, setNewNote] = useState('new note nhe')
+  // const [newNote, setNewNote] = useState('new note nhe')
   const [showAll, setShowAll]  = useState(true)
   const [errorMessage, setErrorMessage] = useState(null)
   const [username, setUsername] = useState('')
@@ -43,19 +43,29 @@ const App = () => {
   },[])
 
   const noteToShow = showAll ? notes : notes.filter(note => note.important === true)
-  const addNote = (event) => {
-    event.preventDefault()
-    const noteObject = {
-      content: newNote,
-      important: Math.random() < 0.5,
-    }
+
+  const addNote = (noteObject) => {
+    // event.preventDefault()
+    // const noteObject = {
+    //   content: newNote,
+    //   important: Math.random() < 0.5,
+    // }
+    noteFormRef.current.toggleVisibility()
     noteService
       .create(noteObject)
       .then(returnedNote => {
         setNotes(notes.concat(returnedNote))
-        setNewNote('')
+        // setNewNote('')
       })
   }
+
+  const noteFormRef = useRef()
+  const noteForm = () => (
+    <Togglabel buttonLabel='add-note-func' ref = {noteFormRef}>
+      <NoteForm createNote={addNote} />
+    </Togglabel>
+  )
+
   const toggleImportance = (id) => {
     const url = `http://localhost:3001/notes/${id}`
     const note = notes.find(note => note.id === id)
@@ -144,32 +154,17 @@ const App = () => {
               handlePasswordChange={({target}) => setPassword(target.value)}
             />
           </Togglabel>
-
-          {/* <div style={hideWhenVisible}>
-            <button onClick={()=>setLoginVisible(true)}>log-in</button>
-          </div>
-
-          <div style={showWhenVisible}>
-            <LoginForm
-              handleLogin={handleLogin}
-              username={username}
-              password={password}
-              handleUsernameChange={({target}) => setUsername(target.value)}
-              handlePasswordChange={({target}) => setPassword(target.value)}
-            />
-            <button onClick={()=>setLoginVisible(false)}>cancel</button>
-          </div> */}
         </div> :
-
         <div>
           <p>{user.name} logged-in <button onClick={handleLogout}>logout</button></p>
-          <Togglabel buttonLabel = 'add-note-func'>
+          {noteForm()}
+          {/* <Togglabel buttonLabel = 'add-note-func'>
             <NoteForm
               addNote={addNote}
               newNote={newNote}
               handleNewNoteChange={({target}) => setNewNote(target.value)}
             />
-          </Togglabel>
+          </Togglabel> */}
         </div>
         
       }<br/>
@@ -186,13 +181,15 @@ const App = () => {
         )}
       </ul>
 
-      <p>
+      <div>
         just test togglabel: 
         <Togglabel buttonLabel = 'reveal'>
           <p>this line is at start hidden</p>
           <p>also this is hidden</p>
         </Togglabel>
-      </p>
+      </div>
+        
+      
       <Footer/>
     </div>
   )
